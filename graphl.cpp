@@ -49,7 +49,9 @@ void GraphL::buildGraph(ifstream& infile){
         getline(infile, graphData);
         NodeData* nodeData = new NodeData(graphData);
         graphNodes[i].data = nodeData;
-
+        //delete nodeData;
+        nodeData = nullptr;
+        delete nodeData;
     }
 
     cout << "" << endl;
