@@ -19,7 +19,7 @@
 //              with predefinied inital values.
 // ---------------------------------------------------------------------------------------------------
 GraphM::GraphM(){
-    size = 0; //Size is 0
+    size = 0;               //Size is 0 in a newly initialized GraphM
 
     TableType initial; //This variable is going to serve as the initial values for all the TableType varibles in T.
     initial.dist = inf;
@@ -219,21 +219,21 @@ void GraphM::displayAll(){
     cout << "--------------------------------------------------------------" << endl;
 
     for (int source = 1; source <= size; source++){
-        cout << data[source] /*<< endl*/ << endl;     // print node name
+        cout << data[source] /*<< endl*/ << endl; 
 
         for (int dest = 1; dest <= size; dest++){
             if (T[source][dest].dist != 0){
-                cout << "\t\t\t " << source;   // print from node
-                cout << "\t    " << dest;     // print to node
+                cout << "\t\t\t " << source; 
+                cout << "\t    " << dest; 
 
                 if (T[source][dest].dist == inf){
-                    cout << "\t      " << "----" << endl; // no adjacent nodes
+                    cout << "\t      " << "----" << endl;           //
                 }
 
                 else{
-                    cout << "\t       " << T[source][dest].dist;   // print distance
+                    cout << "\t       " << T[source][dest].dist;   //
                     cout << "\t ";
-                    getPath(source, dest); // call helper
+                    getPath(source, dest);                          //
                     cout << "" << endl;
                 }
             }
@@ -262,19 +262,19 @@ void GraphM::printAdjMatrix(){
 // ---------------------------------------------------------------------------------------------------
 void GraphM::getPath(int source, int dest)
 {
-    if (T[source][dest].dist == inf){  //This is the basecase, where we have no direct path between two nodes.
+    if (T[source][dest].dist == inf){ 
         return;
     }
 
     if (source==dest){
-        cout << dest << " ";  // print data
+        cout << dest << " "; 
         return;
     }
 
-    int currentNode = dest;        //Here we are setting the hop between nodes.
+    int currentNode = dest;
     getPath(source, dest = T[source][dest].path);
 
-    cout << currentNode << " ";   // print path
+    cout << currentNode << " ";
 }
 
 // ---------------------------------getWeight--------------------------------------------------

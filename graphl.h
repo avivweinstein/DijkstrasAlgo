@@ -13,7 +13,6 @@
 #define Graph_L
 #include "nodedata.h"
 #define MAXNODES 101
-#define MAXNODES_L 101
 
 using namespace std;
 

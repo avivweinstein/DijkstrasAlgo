@@ -2,11 +2,11 @@
 //
 // Programmer Name: Aviv Weinstein
 // Course Section Number: CSS 502 A
-// Creation Date: 
-// Date of Last Modification:
+// Creation Date: 2/1/2021
+// Date of Last Modification: 2/15/2021
 // Instructor Name: Professor Dong Si
 // --------------------------------------------------------------------------------------------------------------------
-// Purpose - 
+// Purpose - Header file for GraphM class
 // --------------------------------------------------------------------------------------------------------------------
 // Notes on specifications, special algorithms, and assumptions: 
 // --------------------------------------------------------------------------------------------------------------------

@@ -1,11 +1,11 @@
-// ------------------------------------------------graphm.cpp-------------------------------------------------------
+// ------------------------------------------------graphl.cpp-------------------------------------------------------
 // Programmer Name: Aviv Weinstein
 // Course Section Number: CSS 502 A
 // Creation Date: 2/1/21
 // Date of Last Modification: 2/14/21
 // Instructor Name: Professor Dong Si
 // --------------------------------------------------------------------------------------------------------------------
-// Purpose - 
+// Purpose - This is the implementation file for the functions prototyped in graphl.h
 // --------------------------------------------------------------------------------------------------------------------
 // Notes on specifications, special algorithms, and assumptions: 
 //      INDEX 0 is not used!
@@ -13,7 +13,6 @@
 #include "graphl.h"
 #define MAXNODES 101
 #define inf 10000
-#include <iomanip>
 
 // ---------------------------------Basic Constructor--------------------------------------------------
 // Description: Basic constructor for the GraphL class.
@@ -22,6 +21,7 @@
 GraphL::GraphL(){
 
     for (int i = 1; i < MAXNODES; i++){           //This loop initializes the adjacency list array to NULL values for the pointers.
+        
         graphNodes[i].visited = false;              //We also mark each node as false for visited.
         graphNodes[i].edgeHead = nullptr;
         graphNodes[i].data = nullptr;
@@ -41,43 +41,43 @@ GraphL::~GraphL(){
 // ---------------------------------------------------------------------------------------------------
 void GraphL::buildGraph(ifstream& infile){
 
-      // read from data file
-    infile >> size;            // sets the size
-    string nodeName = "";       // name of each node
-    getline(infile, nodeName); // read line
+    string nodeName = "";                   //Creating a variable to store the data we read from infile.
+    infile >> size; 						//Storing the size of the we are creating in the private "size" variable
+    getline(infile, nodeName); 
 
-    for (int i = 1; i <= size; ++i) // insert edge names
-    {
-        getline(infile, nodeName);
-        NodeData* tmp = new NodeData(nodeName);
-        graphNodes[i].data = tmp;   // insert into array
+    for (int i = 1; i <= size; i++){ 					//Here I am creating the data (graph.data) array.
+    
+        getline(infile, nodeName);						//Grabbing full line to use as the name of the node
+        NodeData* newNode = new NodeData(nodeName);     //Creating a new NodeData to store the name of the node
+        graphNodes[i].data = newNode;
     }
 
-    int from, to;
+    int source, destination;
 
-    while (infile >> from >> to)   // fill linked list
-    {
-        if (from == 0)
-        {
+    while (infile >> source >> destination){
+
+        if (source == 0){
+
             break;
         }
 
-        if (graphNodes[from].edgeHead == NULL)  // first node at array index
-        {
-            EdgeNode* node = new EdgeNode;
-            node->adjGraphNode = to;            // insert adjacent
-            graphNodes[from].edgeHead = node;   // point to head
-            graphNodes[from].edgeHead->nextEdge  = NULL;
+        if (graphNodes[source].edgeHead == nullptr){ //If there is no node in our array of nodes representing the graph.
+            
+            EdgeNode* graphNode = new EdgeNode;  			  //create a new node
+            graphNode->adjGraphNode = destination;            //set the adjacentgraphnode location to the destination we have read in from the infile
+            graphNodes[source].edgeHead = graphNode;   		  //Update our array representing the graph
+            graphNodes[source].edgeHead->nextEdge  = nullptr;
         }
-        else    // additional nodes in linked list
-        {
-            EdgeNode* node = new EdgeNode;
-            node->adjGraphNode = to;            // insert adjacent
-            node->nextEdge = graphNodes[from].edgeHead;  // move pointer
-            graphNodes[from].edgeHead = node;  // assign as head
+        else{
+            
+            EdgeNode* graphNode = new EdgeNode;
+            graphNode->adjGraphNode = destination;            
+            graphNode->nextEdge = graphNodes[source].edgeHead; 
+            graphNodes[source].edgeHead = graphNode;  
         }
     }
-    cout << "" << endl;         //Formatting
+	
+    cout << "" << endl;         					//Formatting
 }
 
 // ---------------------------------depthFirstSearch()--------------------------------------------------
@@ -86,14 +86,13 @@ void GraphL::buildGraph(ifstream& infile){
 void GraphL::depthFirstSearch(){
     cout << "Depth-first ordering:";    
 
-    for (int v = 1; v <= size; ++v) // loop through size
-    {
-        if (graphNodes[v].visited == false)   // check if node has been visited
-        {
-            dfsHelper(v);  // call helper
+    for (int i = 1; i <= size; i++){
+
+        if (graphNodes[i].visited == false){
+
+            dfsHelper(i);  //Call the depth first search helper funciton
         }
     }
-
     cout << endl;
 }
 
@@ -101,43 +100,46 @@ void GraphL::depthFirstSearch(){
 // Description: This is a recursive function that helps perform a depth first search of the grpah.
 // ---------------------------------------------------------------------------------------------------
 void GraphL::dfsHelper(int node){
-    cout << setw(2) << node;   // print node
-    graphNodes[node].visited = true;   // mark visited
-    EdgeNode* current = graphNodes[node].edgeHead; // move pointer to head
+    cout << "  " << node; 
+    graphNodes[node].visited = true;						//We mark each node we visit as true.
+    EdgeNode* currentNode = graphNodes[node].edgeHead; 		//Creating a pointer to traverse our grpah.
 
-    while (current != NULL) // loop till end of linked list
-    {
-        if (!graphNodes[current->adjGraphNode].visited) // check if visited
-        {
-            dfsHelper(current->adjGraphNode);  // call helper
+    for( ; ;){
+        if(currentNode == nullptr){
+            break;
+        }
+        
+        if (graphNodes[currentNode->adjGraphNode].visited == false){		//we only visit unvisited nodes.
+            dfsHelper(currentNode->adjGraphNode);				//recursive call again if we can keep going
         }
 
-        current = current->nextEdge;    // move pointer to next node in linked list
+        currentNode = currentNode->nextEdge;			//Move to the next node.
     }
 }
-
 
 // ---------------------------------displayGraph--------------------------------------------------
 // Description: Fucntion to display the current GraphL object graph. Also display the 
 //              nodes and connections that each graph has.
 // ---------------------------------------------------------------------------------------------------
 void GraphL::displayGraph(){
-
     cout << "Graph:" << endl;
 
-    for (int i = 1; i <= size; ++i) // print array info
-    {
-        // print index and name of the node
-        cout << "Node" << i << "      " << *graphNodes[i].data << endl << endl;
+    for (int i = 1; i <= size; i++){
 
-        EdgeNode* current = graphNodes[i].edgeHead; // assign to current
+        cout << "Node" << i << "\t\t" << *graphNodes[i].data << endl;
+        EdgeNode* currentNode = graphNodes[i].edgeHead; //Create a pointer to traverse our list.
 
-        while (current != NULL) // check for linked list
-        {
-            // print linked list
-            cout << setw(7) << "edge " << i << setw(2) << current->adjGraphNode << endl;
-            current = current->nextEdge;  // move pointer to next node in linked list
+        for( ; ;){
+
+            //If we have no more locations to traverse in our linked list, we break.
+            if(currentNode == nullptr){ 
+                break;
+            }
+            
+            cout << "\t edge " << i << "  " << currentNode->adjGraphNode << endl;
+            currentNode = currentNode->nextEdge;
         }
+		cout << "" << endl; //Formatting for space between each node we print
     }
 }
 
@@ -146,22 +148,27 @@ void GraphL::displayGraph(){
 //              Additionally, this function de-allocates memory used in the GraphL class.
 // ---------------------------------------------------------------------------------------------------
 void GraphL::cleanGraph(){
-    for (int x = 1; x <= size; ++x)
-    {
-        graphNodes[x].visited = false;
-        delete graphNodes[x].data;  // delete edge name
-        graphNodes[x].data = NULL;  // set edge name to NULL
+	
+    for (int i = 1; i <= size; i++){
+        //This block of code loops through all the nodes we have allocated in the current
+        //graph and cleans up the pointers/memory we have allocated.
+        
+        graphNodes[i].visited = false;
+        delete graphNodes[i].data;
+        graphNodes[i].data = nullptr;
 
-        if (graphNodes[x].edgeHead != NULL) // check for linked list in array index
-        {
-            EdgeNode* del = graphNodes[x].edgeHead;
-
-            while (del != NULL) // traverse linked list
-            {
-                graphNodes[x].edgeHead = graphNodes[x].edgeHead->nextEdge;
-                delete del; // delete node
-                del = NULL; // set node to NULL
-                del = graphNodes[x].edgeHead;   // move head
+        //This if statement checks for one of the linked lists we have created
+        if (graphNodes[i].edgeHead != nullptr){
+			
+            //We create a pointer to traverse our linked list.
+            EdgeNode* nodeToDelete = graphNodes[i].edgeHead; 
+			
+            while (nodeToDelete != nullptr){    //While we still have a list, we loop.
+				
+                 //increment our linked list to point to the next item
+                graphNodes[i].edgeHead = graphNodes[i].edgeHead->nextEdge; 
+                delete nodeToDelete;            //Delete the node we are currently at.
+                nodeToDelete = nullptr;         //set our node to nullptr
             }
         }
     }

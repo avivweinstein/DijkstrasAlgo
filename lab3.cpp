@@ -58,6 +58,5 @@ int main() {
 		G.depthFirstSearch();    // find and display depth-first ordering to cout
 	}
 	
-	cout <<  "finished" << endl;
 	return 0;
 }
