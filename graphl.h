@@ -40,7 +40,7 @@ class GraphL{
 
         int size;                   //size of the current graph we are searching.
 
-        GraphNode graphNodes[MAXNODES_L];
+        GraphNode graphNodes[MAXNODES];
 
         //Utility Functions
         void cleanGraph();          //Utility function to help deallocate memory

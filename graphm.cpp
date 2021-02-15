@@ -262,17 +262,18 @@ void GraphM::printAdjMatrix(){
 // ---------------------------------------------------------------------------------------------------
 void GraphM::getPath(int source, int dest)
 {
-    if (T[source][dest].dist == inf){ 
+    if (T[source][dest].dist == inf){
         return;
     }
 
-    if (source==dest){
+    if (source==dest){      //base case for recursive function.
         cout << dest << " "; 
         return;
     }
 
-    int currentNode = dest;
-    getPath(source, dest = T[source][dest].path);
+    int currentNode = 0;
+    currentNode = dest;        //Get the current node we are tracing through
+    getPath(source, dest = T[source][dest].path); //move along the path
 
     cout << currentNode << " ";
 }
