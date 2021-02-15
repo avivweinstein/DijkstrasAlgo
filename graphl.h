@@ -2,28 +2,25 @@
 //
 // Programmer Name: Aviv Weinstein
 // Course Section Number: CSS 502 A
-// Creation Date: 
-// Date of Last Modification:
+// Creation Date: 2/10/21
+// Date of Last Modification: 2/14/21
 // Instructor Name: Professor Dong Si
 // --------------------------------------------------------------------------------------------------------------------
-// Purpose - 
+// Purpose - This is the header file for graphl.cpp. This header file was made based on the information included
+//           in the assignment 3 instructions.
 // --------------------------------------------------------------------------------------------------------------------
-// Notes on specifications, special algorithms, and assumptions: 
-// --------------------------------------------------------------------------------------------------------------------
-
 #ifndef Graph_L
 #define Graph_L
 #include "nodedata.h"
 #define MAXNODES 101
 #define MAXNODES_L 101
-//We have inlcuded iostream in nodedata.h
 
 using namespace std;
 
 class GraphL{
     public:
-        GraphL();
-        ~GraphL();
+        GraphL();                   //Basic constructor for GraphL
+        ~GraphL();                  //Destructor
         void buildGraph(ifstream& infile);
         void displayGraph();
         void depthFirstSearch();
@@ -47,9 +44,8 @@ class GraphL{
         GraphNode graphNodes[MAXNODES_L];
 
         //Utility Functions
-        void cleanGraph();
-        void dfsHelper(int node);
-  
+        void cleanGraph();          //Utility function to help deallocate memory
+        void dfsHelper(int node);   //Helps with Depth first search.
 };
 
 #endif

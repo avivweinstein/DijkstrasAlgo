@@ -10,7 +10,6 @@
 // Notes on specifications, special algorithms, and assumptions: 
 //      INDEX 0 is not used!
 // --------------------------------------------------------------------------------------------------------------------
-//Making useless chnages for github! More fucking changes.
 #include "graphm.h"
 #define MAXNODES 101
 #define inf 10000
@@ -159,9 +158,6 @@ void GraphM::display(int fromNode, int toNode){
 //              i.e., TableType T is updated with shortest path information.
 // ---------------------------------------------------------------------------------------------------
 void GraphM::findShortestPath(){
-    // cout << "" << endl;
-    // cout << "findShortestPath" << endl;
-    // cout << "" << endl;
 
     for(int source = 1; source <= size; source++){
         T[source][source].dist = 0;
@@ -210,10 +206,6 @@ void GraphM::findShortestPath(){
                  }
             }
         }
-
-    // cout << "" << endl;
-    // cout << "end of findShortestPath" << endl;
-    // cout << "" << endl;
     }
 }
 
@@ -288,25 +280,20 @@ void GraphM::getPath(int source, int dest)
 // ---------------------------------getWeight--------------------------------------------------
 // Description: Utility function to help calculate the weight between two nodes.
 //              source is the start node and dest is the end node.
+//              This is done recursively.
 // ---------------------------------------------------------------------------------------------------
 void GraphM::getWeight(int source, int dest){
 
-    if (T[source][dest].dist == inf){
-        return; // no data
-    }
+    int dist = dest;
 
-    if (source == dest){
-        cout << data[dest] << endl;   // print data
+    if (source == dest){                   //base case for our function.
+        cout << data[dest] << endl;
         return;
     }
 
-    int dist = dest; // assign dest node dest nodeData
-
-    getWeight(source, dest = T[source][dest].path);  // call helper
-
-    cout << data[dist] << endl;
-
-
+    //If we havent reached out destination node, call the function again but with the next node in our path
+    getWeight(source, T[source][dest].path); 
+    cout << data[dist] << endl;         //Print out the name of the path
 }
 
 
